@@ -1,0 +1,36 @@
+public class Employee {
+   
+    private int id;
+    private String name;
+    private double basicSalary;
+
+    public Employee(int id, String name, double basicSalary) {
+        this.id = id;
+        this.name = name;
+        this.basicSalary = basicSalary;
+    }
+
+    public int getId() { return id; }
+    public String getName() { return name; }
+    public double getBasicSalary() { return basicSalary; }
+
+    public void setName(String name) { this.name = name; }
+    public void setBasicSalary(double salary) { this.basicSalary = salary; }
+
+    public double calculateTax() {
+        // Example: 10% tax
+        return 0.10 * basicSalary;
+    }
+
+    public double calculateNetSalary() {
+        return basicSalary - calculateTax();
+    }
+
+    public void printPayslip() {
+        System.out.println("\n--- Payslip for " + name + " ---");
+        System.out.printf("Basic Salary: %.2f\n", basicSalary);
+        System.out.printf("Tax (10%%): %.2f\n", calculateTax());
+        System.out.printf("Net Salary: %.2f\n", calculateNetSalary());
+        System.out.println("-----------------------------\n");
+    }
+}
