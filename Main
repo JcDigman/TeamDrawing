@@ -1,0 +1,67 @@
+ublic class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        PayrollSystem system = new PayrollSystem();
+        int choice;
+
+        do {
+            System.out.println("\n=== Payroll System Menu ===");
+            System.out.println("1. Add Employee");
+            System.out.println("2. Delete Employee");
+            System.out.println("3. Modify Employee");
+            System.out.println("4. View Payslip");
+            System.out.println("5. List Employees");
+            System.out.println("0. Exit");
+            System.out.print("Enter choice: ");
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter ID: ");
+                    int id = sc.nextInt();
+                    sc.nextLine(); // consume newline
+                    System.out.print("Enter Name: ");
+                    String name = sc.nextLine();
+                    System.out.print("Enter Basic Salary: ");
+                    double salary = sc.nextDouble();
+                    system.addEmployee(id, name, salary);
+                    break;
+
+                case 2:
+                    System.out.print("Enter ID to delete: ");
+                    system.deleteEmployee(sc.nextInt());
+                    break;
+
+                case 3:
+                    System.out.print("Enter ID to modify: ");
+                    id = sc.nextInt();
+                    sc.nextLine();
+                    System.out.print("Enter New Name: ");
+                    name = sc.nextLine();
+                    System.out.print("Enter New Salary: ");
+                    salary = sc.nextDouble();
+                    system.modifyEmployee(id, name, salary);
+                    break;
+
+                case 4:
+                    System.out.print("Enter ID to view payslip: ");
+                    system.viewPayslip(sc.nextInt());
+                    break;
+
+                case 5:
+                    system.listEmployees();
+                    break;
+
+                case 0:
+                    System.out.println("Exiting program...");
+                    break;
+
+                default:
+                    System.out.println("Invalid option.");
+            }
+
+        } while (choice != 0);
+
+        sc.close();
+    }
+}
