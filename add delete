@@ -1,0 +1,126 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+
+class Employee {
+    static int count = 1;
+    int id;
+    String name;
+    String position;
+    int daysWorked;
+    double dailyRate;
+
+    public Employee(String name, String position, int daysWorked, double dailyRate) {
+        this.id = count++;
+        this.name = name;
+        this.position = position;
+        this.daysWorked = daysWorked;
+        this.dailyRate = dailyRate;
+    }
+
+    public double getSalary() {
+        return daysWorked * dailyRate;
+    }
+
+    public String getPayslip() {
+        return "==============================\n" +
+               "         PAY SLIP RECEIPT     \n" +
+               "==============================\n" +
+               "Employee ID:   " + id + "\n" +
+               "Name:          " + name + "\n" +
+               "Position:      " + position + "\n" +
+               "Days Worked:   " + daysWorked + "\n" +
+               "Daily Rate:    ₱" + dailyRate + "\n" +
+               "------------------------------\n" +
+               "Gross Salary:  ₱" + getSalary() + "\n" +
+               "==============================\n\n";
+    }
+}
+
+public class PayrollGUI extends JFrame {
+    private ArrayList<Employee> employees = new ArrayList<>();
+
+    private JTextField nameField = new JTextField(15);
+    private JTextField positionField = new JTextField(15);
+    private JTextField daysWorkedField = new JTextField(5);
+    private JTextField dailyRateField = new JTextField(8);
+    private JTextArea outputArea = new JTextArea(15, 35);
+
+    public PayrollGUI() {
+        setTitle("Employee Payroll System");
+        setSize(500, 500);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+
+        // --- Top Panel (Form) ---
+        JPanel inputPanel = new JPanel(new GridLayout(5, 2, 5, 5));
+        inputPanel.setBorder(BorderFactory.createTitledBorder("Enter Employee Details"));
+
+        inputPanel.add(new JLabel("Name:"));
+        inputPanel.add(nameField);
+        inputPanel.add(new JLabel("Position:"));
+        inputPanel.add(positionField);
+        inputPanel.add(new JLabel("Days Worked:"));
+        inputPanel.add(daysWorkedField);
+        inputPanel.add(new JLabel("Daily Rate: ₱"));
+        inputPanel.add(dailyRateField);
+
+        JButton addButton = new JButton("Add Employee");
+        JButton printButton = new JButton("Show Payslips");
+        inputPanel.add(addButton);
+        inputPanel.add(printButton);
+
+        add(inputPanel, BorderLayout.NORTH);
+
+        // --- Center Panel (Output) ---
+        outputArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(outputArea);
+        add(scrollPane, BorderLayout.CENTER);
+
+        // --- Button Actions ---
+        addButton.addActionListener(e -> addEmployee());
+        printButton.addActionListener(e -> showPayslips());
+
+        setVisible(true);
+    }
+
+    private void addEmployee() {
+        try {
+            String name = nameField.getText();
+            String position = positionField.getText();
+            int days = Integer.parseInt(daysWorkedField.getText());
+            double rate = Double.parseDouble(dailyRateField.getText());
+
+            Employee emp = new Employee(name, position, days, rate);
+            employees.add(emp);
+
+            JOptionPane.showMessageDialog(this, "Employee added successfully!");
+            clearFields();
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Please enter valid numbers for days worked and rate.");
+        }
+    }
+
+    private void showPayslips() {
+        outputArea.setText("");
+        if (employees.isEmpty()) {
+            outputArea.setText("No employee records found.");
+        } else {
+            for (Employee emp : employees) {
+                outputArea.append(emp.getPayslip());
+            }
+        }
+    }
+
+    private void clearFields() {
+        nameField.setText("");
+        positionField.setText("");
+        daysWorkedField.setText("");
+        dailyRateField.setText("");
+    }
+
+    public static void main(String[] args) {
+        new PayrollGUI();
+    }
+}
